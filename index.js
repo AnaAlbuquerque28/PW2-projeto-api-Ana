@@ -1,8 +1,11 @@
 /*IMPORTA O PACOTE DO EXPRESS PARA O SCRIPT index.js*/
 const express = require('express');
+const routesCategoria = require('./route/categoria');
 
 /*TORNA O EXPRESS EXECUTAVEL DENTRO DO SCRIPT index.js ATRAVÉS DA CONSTANTE app*/ 
 const app = express();
+
+app.use('/', routesCategoria);
 
 /*CRIAR UM WEBSERVER CAPAZ DE RECEBER REQUISIÇÕES VIA HTTP.
 PARAMETROS DO LISTEN
@@ -10,7 +13,7 @@ PARAMETROS DO LISTEN
 2- CALLBACK (OPCIONAL);
 */ 
 app.listen(3000, ()=>{
-    console.log('SERVIDOR RODANDO!');
+    console.log('SERVIDOR RODANDO - EM http://localhost:3000 ');
 });
 
 /*PARA NAVEGAR NESSE PROGRAMA:
