@@ -5,6 +5,8 @@ const routesCategoria = require('./route/categoria');
 /*TORNA O EXPRESS EXECUTAVEL DENTRO DO SCRIPT index.js ATRAVÉS DA CONSTANTE app*/ 
 const app = express();
 
+console.log('teste de github');
+
 app.use('/', routesCategoria);
 
 /*CRIAR UM WEBSERVER CAPAZ DE RECEBER REQUISIÇÕES VIA HTTP.
