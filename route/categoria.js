@@ -2,22 +2,208 @@ const express = require('express');
 
 const modelRoupas = require('../model/modelRoupas');
 
-const roupa = express.Router();
+const rota = express.Router();
 
-roupa.post('/cadastrarRoupa', (req, res)=>{
-    res.send('ROTA DE CADASTRO DE ROUPAS!');
+rota.post('/cadastrarRoupa', (req, res)=>{
+    console.log(req.body);
+    let {nome_cliente} = req.body;
+    modelRoupas.create(
+        {nome_cliente}
+    ).then(
+        ()=>{
+            return res.status(201).json({
+                erroStatus:false,
+                mensagemStatus:"CLIENTE INSERIDO COM SUCESSO"
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus:true,
+                mensagemStatus:"ERRO AO INSERIR CLIENTE",
+                errorObject:error
+            })
+        }
+    )
+
 });
 
-roupa.get('/listarRoupas', (req, res)=>{
+rota.get('/listarRoupas', (req, res)=>{
+        modelRoupas.findAll()
+        .then(
+            (response)=>{
+                return res.status(200).json({
+                    erroStatus: false,
+                    mensagemStatos:"LISTAGEM REALIZADA",
+                    data: response
+                })
+            }
+        ).catch(
+            (error)=>{
+                return res.status(400).json({
+                    erroStatus: true,
+                    mensagemStatus:"LISTAGEM NÃO REALIZADA",
+                    errorObject: error
+                });
+            }
+        )
+
+
     res.send('ROTA DE LISTAGEM DE ROUPAS!');
 });
 
-roupa.put('/alterarRoupa', (req, res)=>{
-    res.send('ROTA DE ALTERAÇÃO DE ROUPAS!');
+rota.get('/listarRoupasPK/:idCliente', (req, res)=>{
+    let {idCliente} = req.params;  
+    modelRoupas.findByPk(idCliente)
+    .then(
+        (response)=>{
+            return res.status(200).json({
+                erroStatus: false,
+                mensagemStatos:"LISTAGEM REALIZADA",
+                data: response
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus: true,
+                mensagemStatus:"LISTAGEM NÃO REALIZADA",
+                errorObject: error
+            });
+        }
+    )
 });
 
-roupa.delete('/excluirRoupa', (req, res)=>{
-    res.send('ROTA DE EXCLUSÃO DE ROUPAS!');
+rota.get('/listarRoupasNOME/:nome_cliente', (req, res)=>{
+        let {nome_cliente} = req.params;  
+        modelRoupas.findOne({attributes:['idCliente', 'nome_cliente'],where:{nome_cliente}})
+        .then(
+            (response)=>{
+                return res.status(200).json({
+                    erroStatus: false,
+                    mensagemStatos:"LISTAGEM REALIZADA",
+                    data: response
+                })
+            }
+        ).catch(
+            (error)=>{
+                return res.status(400).json({
+                    erroStatus: true,
+                    mensagemStatus:"LISTAGEM NÃO REALIZADA",
+                    errorObject: error
+                });
+            }
+        )
+});
+rota.get('/listarRoupasCPF/:CPF_cliente', (req, res)=>{
+    let {CPF_cliente} = req.params;  
+    modelRoupas.findOne({attributes:['idCliente', 'CPF_cliente'],where:{CPF_cliente}})
+    .then(
+        (response)=>{
+            return res.status(200).json({
+                erroStatus: false,
+                mensagemStatos:"LISTAGEM REALIZADA",
+                data: response
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus: true,
+                mensagemStatus:"LISTAGEM NÃO REALIZADA",
+                errorObject: error
+            });
+        }
+    )
 });
 
-module.exports = roupa
+rota.get('/listarRoupasEMAIL/:email_cliente', (req, res)=>{
+    let {email_cliente} = req.params;  
+    modelRoupas.findOne({attributes:['idCliente', 'email_cliente'],where:{email_cliente}})
+    .then(
+        (response)=>{
+            return res.status(200).json({
+                erroStatus: false,
+                mensagemStatos:"LISTAGEM REALIZADA",
+                data: response
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus: true,
+                mensagemStatus:"LISTAGEM NÃO REALIZADA",
+                errorObject: error
+            });
+        }
+    )
+});
+
+rota.get('/listarRoupasTELEFONE/:telefone_cliente', (req, res)=>{
+    let {telefone_cliente} = req.params;  
+    modelRoupas.findOne({attributes:['idCliente', 'telefone_cliente'],where:{telefone_cliente}})
+    .then(
+        (response)=>{
+            return res.status(200).json({
+                erroStatus: false,
+                mensagemStatos:"LISTAGEM REALIZADA",
+                data: response
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus: true,
+                mensagemStatus:"LISTAGEM NÃO REALIZADA",
+                errorObject: error
+            });
+        }
+    )
+});
+
+rota.put('/alterarRoupa', (req, res)=>{
+    const {idCliente, nome_cliente} = req.body;
+    modelRoupas.update(
+        {Nome_cliente},
+        {where:{idCliente}}
+    ).then(
+        ()=>{
+            return res.status(200).json({
+                erroStatus: false,
+                mensagemStatos:"ALTERAÇÃO REALIZADA",
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus: true,
+                mensagemStatus:"ERRO AO ALTERAR",
+                errorObject: error
+            });
+        }
+    );
+});
+
+rota.delete('/excluirRoupa/:idCliente', (req, res)=>{
+    console.log(req.params);
+    let {idCliente} = req.params
+    modelRoupas.destroy(
+        {where:{idCliente}}
+    ).then(
+        ()=>{
+            return res.status(200).json({
+                erroStatus: false,
+                mensagemStatos:"EXCLUSÃO REALIZADA",
+            })
+        }
+    ).catch(
+        (error)=>{
+            return res.status(400).json({
+                erroStatus: true,
+                mensagemStatus:"ERRO AO EXCLUIR",
+                errorObject: error
+            });
+        }
+    );
+});
+module.exports = rota;
