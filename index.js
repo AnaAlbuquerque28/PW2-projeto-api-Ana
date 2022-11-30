@@ -3,7 +3,7 @@ const routesRoupas = require('./route/categoria');
 
 const app = express();
 
-app.use('/', modelRoupas);
+app.use('/', categoria);
 console.log('teste de github');
 
 app.listen(3000, ()=>{
